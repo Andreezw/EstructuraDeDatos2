@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="BarcoViewDlg" widgetVar="BarcoViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{myBundle.ViewBarcoTitle}" closeOnEscape="true">
+
+            <h:form id="BarcoViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{barcoController.selected != null}">
+
+                        <h:outputText value="#{myBundle.ViewBarcoLabel_idBarco}"/>
+                        <h:outputText value="#{barcoController.selected.idBarco}" title="#{myBundle.ViewBarcoTitle_idBarco}"/>
+
+                        <h:outputText value="#{myBundle.ViewBarcoLabel_nombre}"/>
+                        <h:outputText value="#{barcoController.selected.nombre}" title="#{myBundle.ViewBarcoTitle_nombre}"/>
+
+                        <h:outputText value="#{myBundle.ViewBarcoLabel_tipo}"/>
+                        <h:outputText value="#{barcoController.selected.tipo}" title="#{myBundle.ViewBarcoTitle_tipo}"/>
+
+                        <h:outputText value="#{myBundle.ViewBarcoLabel_anio}"/>
+                        <h:outputText value="#{barcoController.selected.anio}" title="#{myBundle.ViewBarcoTitle_anio}"/>
+
+                        <h:outputText value="#{myBundle.ViewBarcoLabel_desplazamiento}"/>
+                        <h:outputText value="#{barcoController.selected.desplazamiento}" title="#{myBundle.ViewBarcoTitle_desplazamiento}"/>
+
+                        <h:outputText value="#{myBundle.ViewBarcoLabel_alcance}"/>
+                        <h:outputText value="#{barcoController.selected.alcance}" title="#{myBundle.ViewBarcoTitle_alcance}"/>
+
+                        <h:outputText value="#{myBundle.ViewBarcoLabel_calibre}"/>
+                        <h:outputText value="#{barcoController.selected.calibre}" title="#{myBundle.ViewBarcoTitle_calibre}"/>
+
+                        <h:outputText value="#{myBundle.ViewBarcoLabel_tareaMisil}"/>
+                        <h:outputText value="#{barcoController.selected.tareaMisil}" title="#{myBundle.ViewBarcoTitle_tareaMisil}"/>
+
+                        <h:outputText value="#{myBundle.ViewBarcoLabel_armamento}"/>
+                        <h:outputText value="#{barcoController.selected.armamento}" title="#{myBundle.ViewBarcoTitle_armamento}"/>
+
+                        <h:outputText value="#{myBundle.ViewBarcoLabel_sensores}"/>
+                        <h:outputText value="#{barcoController.selected.sensores}" title="#{myBundle.ViewBarcoTitle_sensores}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{myBundle.Close}" onclick="PF('BarcoViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="RutasCreateDlg" widgetVar="RutasCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{myBundle.CreateRutasTitle}" closeOnEscape="true">
+
+            <h:form id="RutasCreateForm">
+
+                <h:panelGroup id="display" rendered="#{rutasController.selected != null}">
+                    <p:panelGrid columns="2" columnClasses="column">
+
+                        <p:outputLabel value="#{myBundle.CreateRutasLabel_diaSalida}" for="diaSalida" />
+                        <p:inputText id="diaSalida" value="#{rutasController.selected.diaSalida}" title="#{myBundle.CreateRutasTitle_diaSalida}" size="255" maxlength="255"/>
+
+                        <p:outputLabel value="#{myBundle.CreateRutasLabel_diaLlegada}" for="diaLlegada" />
+                        <p:inputText id="diaLlegada" value="#{rutasController.selected.diaLlegada}" title="#{myBundle.CreateRutasTitle_diaLlegada}" size="255" maxlength="255"/>
+
+                        <p:outputLabel value="#{myBundle.CreateRutasLabel_idBarco}" for="idBarco" />
+                        <p:selectOneMenu id="idBarco" value="#{rutasController.selected.idBarco}" required="true" requiredMessage="#{myBundle.CreateRutasRequiredMessage_idBarco}" converter="barcoConverter">
+                            <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{barcoController.items}"
+                                           var="idBarcoItem"
+                                           itemValue="#{idBarcoItem}"
+                                           itemLabel="#{idBarcoItem.idBarco.toString()}"
+                                           />
+
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{rutasController.saveNew}" value="#{myBundle.Save}" update="display,:RutasListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('RutasCreateDialog'));">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{myBundle.Cancel}" oncomplete="PF('RutasCreateDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

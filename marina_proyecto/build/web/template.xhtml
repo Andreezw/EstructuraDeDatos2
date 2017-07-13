@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view contentType="text/html">
+    <h:head>
+        <title><ui:insert name="title">Default Title</ui:insert></title>
+        <h:outputStylesheet library="css" name="pfcrud.css"/>
+        <h:outputScript library="scripts" name="pfcrud.js"/>
+    </h:head>
+        <h:body>
+              <p:growl id="growl" life="3000"/>
+            <p:layout fullPage="true">
+
+                <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">
+                    <div align="center">
+                        <h1><strong>MARINA</strong></h1>
+                    </div>
+                       <a href="../log?accion=salir" class="btn btn-default btn-flat">Salir del sistema</a>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="south" size="100" closable="true" collapsible="true">
+                                       <div align="center">
+                     
+                                           <p:graphicImage width="200px" url="http://www.puce.edu.ec/intranet/assets/frontend/pages/img/imageninstitucional/puce/logo-puce-2016-01.jpg"/>
+                    </div>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="west" size="175" header="PRINCIPAL" collapsible="true">
+                    <h:form>
+                    <p:menu>
+                        <p:submenu label="MENU DEL SISTEMA DE MARINA">
+                            
+                            <p:menuitem value="Barco" outcome="/barco/index" />
+                            <p:menuitem value="Coberta" outcome="/corbeta/index" />
+                            <p:menuitem value="Destructores" outcome="/destructores/index" />
+                            <p:menuitem value="Disponibilidad" outcome="/disponibilidad/index" />
+                            <p:menuitem value="Fragata" outcome="/fragata/index" />
+                            <p:menuitem value="Rutas" outcome="/rutas/index" />
+                            <p:menuitem value="Submarinos" outcome="/submarinos/index" />
+                        </p:submenu>
+
+                    </p:menu>
+                    </h:form>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center">
+                     <ui:insert name="body"/>
+                </p:layoutUnit>
+
+            </p:layout>
+
+        </h:body>
+
+    </f:view>
+    
+</html>
+
+
+

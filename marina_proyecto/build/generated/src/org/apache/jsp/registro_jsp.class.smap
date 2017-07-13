@@ -1,0 +1,14 @@
+SMAP
+registro_jsp.java
+JSP
+*S JSP
+*F
++ 0 registro.jsp
+registro.jsp
+*L
+1,4:45
+6,10:50
+15,29:60
+44,6:90
+49,9:96
+*E

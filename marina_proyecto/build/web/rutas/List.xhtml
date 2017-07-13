@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="RutasListForm">
+
+        <p:panel header="#{myBundle.ListRutasTitle}">
+            <p:contextMenu id="RutasDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{myBundle.Create}" onclick="document.getElementById('RutasListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{myBundle.View}" onclick="document.getElementById('RutasListForm:viewButton').click();" icon="ui-icon-search"/>
+                <p:menuitem value="#{myBundle.Edit}" onclick="document.getElementById('RutasListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{myBundle.Delete}" onclick="document.getElementById('RutasListForm:deleteButton').click();" icon="ui-icon-trash"/>
+                <p:separator/>
+                <p:menuitem value="#{myBundle.RutasMenuItem_idBarco}" icon="ui-icon-search"  actionListener="#{rutasController.prepareIdBarco}" update=":BarcoViewForm" oncomplete="PF('BarcoViewDialog').show()" disabled="#{empty rutasController.selected.idBarco}"/>  
+            </p:contextMenu>
+            <p:dataTable id="datalist"
+                         value="#{rutasController.items}"
+                         lazy="false"
+                         rowKey="#{item.idRutas}"
+                         var="item"
+                         paginator="true"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         selection="#{rutasController.selected}">
+                <!--
+                         To enable Lazy Loading, please copy/replace the following lines above,
+                         and be sure to replace the word HASH with the # symbol:
+                
+                         value="HASH{rutasController.lazyItems}"
+                         lazy="true"
+                         rowKey="HASH{item.idRutas}"  <<< Remove this line
+                -->
+
+
+                <p:ajax event="rowSelect"   update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:RutasDataTableContextMenu" listener="#{rutasController.resetParents}"/>
+                <p:ajax event="rowUnselect" update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:RutasDataTableContextMenu" listener="#{rutasController.resetParents}"/>
+                <p:ajax event="contextMenu" update="@form:createButton @form:viewButton @form:editButton @form:deleteButton" listener="#{rutasController.resetParents}"/>
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('RutasListForm:viewButton').click();"/>
+
+                <p:column sortBy="#{item.idRutas}" filterBy="#{item.idRutas}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListRutasTitle_idRutas}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.idRutas}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.diaSalida}" filterBy="#{item.diaSalida}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListRutasTitle_diaSalida}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.diaSalida}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.diaLlegada}" filterBy="#{item.diaLlegada}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListRutasTitle_diaLlegada}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.diaLlegada}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.idBarco.idBarco}" filterBy="#{item.idBarco.idBarco}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListRutasTitle_idBarco}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.idBarco.idBarco}"/>
+                </p:column>
+
+
+            </p:dataTable>
+
+            <p:commandButton id="createButton"                             icon="ui-icon-plus"   value="#{myBundle.Create}" actionListener="#{rutasController.prepareCreate}" update=":RutasCreateForm" oncomplete="PF('RutasCreateDialog').show()"/>
+            <p:commandButton id="viewButton"   style="visibility: hidden;" icon="ui-icon-search" value="#{myBundle.View}" update=":RutasViewForm" oncomplete="PF('RutasViewDialog').show()" disabled="#{empty rutasController.selected}"/>
+            <p:commandButton id="editButton"   style="visibility: hidden;" icon="ui-icon-pencil" value="#{myBundle.Edit}" update=":RutasEditForm" oncomplete="PF('RutasEditDialog').show()" disabled="#{empty rutasController.selected}"/>
+            <p:commandButton id="deleteButton" style="visibility: hidden;" icon="ui-icon-trash"  value="#{myBundle.Delete}" actionListener="#{rutasController.delete}" update=":growl,datalist" disabled="#{empty rutasController.selected}">
+                <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+
+        </p:panel>
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

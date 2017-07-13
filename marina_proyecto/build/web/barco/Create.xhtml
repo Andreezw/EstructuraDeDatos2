@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="BarcoCreateDlg" widgetVar="BarcoCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{myBundle.CreateBarcoTitle}" closeOnEscape="true">
+
+            <h:form id="BarcoCreateForm">
+
+                <h:panelGroup id="display" rendered="#{barcoController.selected != null}">
+                    <p:panelGrid columns="2" columnClasses="column">
+
+                        <p:outputLabel value="#{myBundle.CreateBarcoLabel_nombre}" for="nombre" />
+                        <p:inputText id="nombre" value="#{barcoController.selected.nombre}" title="#{myBundle.CreateBarcoTitle_nombre}" required="true" requiredMessage="#{myBundle.CreateBarcoRequiredMessage_nombre}" size="50" maxlength="50"/>
+
+                        <p:outputLabel value="#{myBundle.CreateBarcoLabel_tipo}" for="tipo" />
+                        <p:inputText id="tipo" value="#{barcoController.selected.tipo}" title="#{myBundle.CreateBarcoTitle_tipo}" required="true" requiredMessage="#{myBundle.CreateBarcoRequiredMessage_tipo}" size="20" maxlength="20"/>
+
+                        <p:outputLabel value="#{myBundle.CreateBarcoLabel_anio}" for="anio" />
+                        <p:inputText id="anio" value="#{barcoController.selected.anio}" title="#{myBundle.CreateBarcoTitle_anio}" required="true" requiredMessage="#{myBundle.CreateBarcoRequiredMessage_anio}" size="4" maxlength="4"/>
+
+                        <p:outputLabel value="#{myBundle.CreateBarcoLabel_desplazamiento}" for="desplazamiento" />
+                        <p:inputText id="desplazamiento" value="#{barcoController.selected.desplazamiento}" title="#{myBundle.CreateBarcoTitle_desplazamiento}" required="true" requiredMessage="#{myBundle.CreateBarcoRequiredMessage_desplazamiento}"/>
+
+                        <p:outputLabel value="#{myBundle.CreateBarcoLabel_alcance}" for="alcance" />
+                        <p:inputText id="alcance" value="#{barcoController.selected.alcance}" title="#{myBundle.CreateBarcoTitle_alcance}" required="true" requiredMessage="#{myBundle.CreateBarcoRequiredMessage_alcance}" size="50" maxlength="50"/>
+
+                        <p:outputLabel value="#{myBundle.CreateBarcoLabel_calibre}" for="calibre" />
+                        <p:inputText id="calibre" value="#{barcoController.selected.calibre}" title="#{myBundle.CreateBarcoTitle_calibre}" required="true" requiredMessage="#{myBundle.CreateBarcoRequiredMessage_calibre}"/>
+
+                        <p:outputLabel value="#{myBundle.CreateBarcoLabel_tareaMisil}" for="tareaMisil" />
+                        <p:inputText id="tareaMisil" value="#{barcoController.selected.tareaMisil}" title="#{myBundle.CreateBarcoTitle_tareaMisil}" required="true" requiredMessage="#{myBundle.CreateBarcoRequiredMessage_tareaMisil}" size="50" maxlength="50"/>
+
+                        <p:outputLabel value="#{myBundle.CreateBarcoLabel_armamento}" for="armamento" />
+                        <p:inputText id="armamento" value="#{barcoController.selected.armamento}" title="#{myBundle.CreateBarcoTitle_armamento}" required="true" requiredMessage="#{myBundle.CreateBarcoRequiredMessage_armamento}" size="50" maxlength="50"/>
+
+                        <p:outputLabel value="#{myBundle.CreateBarcoLabel_sensores}" for="sensores" />
+                        <p:inputText id="sensores" value="#{barcoController.selected.sensores}" title="#{myBundle.CreateBarcoTitle_sensores}" required="true" requiredMessage="#{myBundle.CreateBarcoRequiredMessage_sensores}" size="50" maxlength="50"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{barcoController.saveNew}" value="#{myBundle.Save}" update="display,:BarcoListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('BarcoCreateDialog'));">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{myBundle.Cancel}" oncomplete="PF('BarcoCreateDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="SubmarinosEditDlg" widgetVar="SubmarinosEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{myBundle.EditSubmarinosTitle}" closeOnEscape="true">
+
+            <h:form id="SubmarinosEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{submarinosController.selected != null}">
+
+
+                        <h:outputLabel value="#{myBundle.EditSubmarinosLabel_idSubmarinos}" for="idSubmarinos" />
+                        <h:outputText id="idSubmarinos" value="#{submarinosController.selected.idSubmarinos}" />
+
+                        <p:outputLabel value="#{myBundle.EditSubmarinosLabel_propulsion}" for="propulsion" />
+                        <p:inputText id="propulsion" value="#{submarinosController.selected.propulsion}" title="#{myBundle.EditSubmarinosTitle_propulsion}" required="true" requiredMessage="#{myBundle.EditSubmarinosRequiredMessage_propulsion}" size="50" maxlength="50"/>
+
+                        <p:outputLabel value="#{myBundle.EditSubmarinosLabel_inmersion}" for="inmersion" />
+                        <p:inputText id="inmersion" value="#{submarinosController.selected.inmersion}" title="#{myBundle.EditSubmarinosTitle_inmersion}" required="true" requiredMessage="#{myBundle.EditSubmarinosRequiredMessage_inmersion}" size="50" maxlength="50"/>
+
+                        <p:outputLabel value="#{myBundle.EditSubmarinosLabel_idBarco}" for="idBarco" />
+                        <p:selectOneMenu id="idBarco" value="#{submarinosController.selected.idBarco}" required="true" requiredMessage="#{myBundle.EditSubmarinosRequiredMessage_idBarco}" converter="barcoConverter">
+                            <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{barcoController.items}"
+                                           var="idBarcoItem"
+                                           itemValue="#{idBarcoItem}"
+                                           itemLabel="#{idBarcoItem.idBarco.toString()}"
+                                           />
+
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{submarinosController.save}" value="#{myBundle.Save}" update="display,:SubmarinosListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('SubmarinosEditDialog'));">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{myBundle.Cancel}" oncomplete="PF('SubmarinosEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

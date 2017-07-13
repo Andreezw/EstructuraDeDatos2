@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="DestructoresListForm">
+
+        <p:panel header="#{myBundle.ListDestructoresTitle}">
+            <p:contextMenu id="DestructoresDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{myBundle.Create}" onclick="document.getElementById('DestructoresListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{myBundle.View}" onclick="document.getElementById('DestructoresListForm:viewButton').click();" icon="ui-icon-search"/>
+                <p:menuitem value="#{myBundle.Edit}" onclick="document.getElementById('DestructoresListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{myBundle.Delete}" onclick="document.getElementById('DestructoresListForm:deleteButton').click();" icon="ui-icon-trash"/>
+                <p:separator/>
+                <p:menuitem value="#{myBundle.DestructoresMenuItem_idBarco}" icon="ui-icon-search"  actionListener="#{destructoresController.prepareIdBarco}" update=":BarcoViewForm" oncomplete="PF('BarcoViewDialog').show()" disabled="#{empty destructoresController.selected.idBarco}"/>  
+            </p:contextMenu>
+            <p:dataTable id="datalist"
+                         value="#{destructoresController.items}"
+                         lazy="false"
+                         rowKey="#{item.idDestructores}"
+                         var="item"
+                         paginator="true"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         selection="#{destructoresController.selected}">
+                <!--
+                         To enable Lazy Loading, please copy/replace the following lines above,
+                         and be sure to replace the word HASH with the # symbol:
+                
+                         value="HASH{destructoresController.lazyItems}"
+                         lazy="true"
+                         rowKey="HASH{item.idDestructores}"  <<< Remove this line
+                -->
+
+
+                <p:ajax event="rowSelect"   update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:DestructoresDataTableContextMenu" listener="#{destructoresController.resetParents}"/>
+                <p:ajax event="rowUnselect" update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:DestructoresDataTableContextMenu" listener="#{destructoresController.resetParents}"/>
+                <p:ajax event="contextMenu" update="@form:createButton @form:viewButton @form:editButton @form:deleteButton" listener="#{destructoresController.resetParents}"/>
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('DestructoresListForm:viewButton').click();"/>
+
+                <p:column sortBy="#{item.idDestructores}" filterBy="#{item.idDestructores}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListDestructoresTitle_idDestructores}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.idDestructores}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.potencia}" filterBy="#{item.potencia}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListDestructoresTitle_potencia}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.potencia}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.idBarco.idBarco}" filterBy="#{item.idBarco.idBarco}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListDestructoresTitle_idBarco}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.idBarco.idBarco}"/>
+                </p:column>
+
+
+            </p:dataTable>
+
+            <p:commandButton id="createButton"                             icon="ui-icon-plus"   value="#{myBundle.Create}" actionListener="#{destructoresController.prepareCreate}" update=":DestructoresCreateForm" oncomplete="PF('DestructoresCreateDialog').show()"/>
+            <p:commandButton id="viewButton"   style="visibility: hidden;" icon="ui-icon-search" value="#{myBundle.View}" update=":DestructoresViewForm" oncomplete="PF('DestructoresViewDialog').show()" disabled="#{empty destructoresController.selected}"/>
+            <p:commandButton id="editButton"   style="visibility: hidden;" icon="ui-icon-pencil" value="#{myBundle.Edit}" update=":DestructoresEditForm" oncomplete="PF('DestructoresEditDialog').show()" disabled="#{empty destructoresController.selected}"/>
+            <p:commandButton id="deleteButton" style="visibility: hidden;" icon="ui-icon-trash"  value="#{myBundle.Delete}" actionListener="#{destructoresController.delete}" update=":growl,datalist" disabled="#{empty destructoresController.selected}">
+                <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+
+        </p:panel>
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

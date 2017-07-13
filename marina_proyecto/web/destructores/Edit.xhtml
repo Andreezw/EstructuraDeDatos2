@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="DestructoresEditDlg" widgetVar="DestructoresEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{myBundle.EditDestructoresTitle}" closeOnEscape="true">
+
+            <h:form id="DestructoresEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{destructoresController.selected != null}">
+
+
+                        <h:outputLabel value="#{myBundle.EditDestructoresLabel_idDestructores}" for="idDestructores" />
+                        <h:outputText id="idDestructores" value="#{destructoresController.selected.idDestructores}" />
+
+                        <p:outputLabel value="#{myBundle.EditDestructoresLabel_potencia}" for="potencia" />
+                        <p:inputText id="potencia" value="#{destructoresController.selected.potencia}" title="#{myBundle.EditDestructoresTitle_potencia}" required="true" requiredMessage="#{myBundle.EditDestructoresRequiredMessage_potencia}" size="50" maxlength="50"/>
+
+                        <p:outputLabel value="#{myBundle.EditDestructoresLabel_idBarco}" for="idBarco" />
+                        <p:selectOneMenu id="idBarco" value="#{destructoresController.selected.idBarco}" required="true" requiredMessage="#{myBundle.EditDestructoresRequiredMessage_idBarco}" converter="barcoConverter">
+                            <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{barcoController.items}"
+                                           var="idBarcoItem"
+                                           itemValue="#{idBarcoItem}"
+                                           itemLabel="#{idBarcoItem.idBarco.toString()}"
+                                           />
+
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{destructoresController.save}" value="#{myBundle.Save}" update="display,:DestructoresListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('DestructoresEditDialog'));">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{myBundle.Cancel}" oncomplete="PF('DestructoresEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

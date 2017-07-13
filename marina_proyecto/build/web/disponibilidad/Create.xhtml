@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="DisponibilidadCreateDlg" widgetVar="DisponibilidadCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{myBundle.CreateDisponibilidadTitle}" closeOnEscape="true">
+
+            <h:form id="DisponibilidadCreateForm">
+
+                <h:panelGroup id="display" rendered="#{disponibilidadController.selected != null}">
+                    <p:panelGrid columns="2" columnClasses="column">
+
+                        <p:outputLabel value="#{myBundle.CreateDisponibilidadLabel_estado}" for="estado" />
+                        <p:inputText id="estado" value="#{disponibilidadController.selected.estado}" title="#{myBundle.CreateDisponibilidadTitle_estado}" size="255" maxlength="255"/>
+
+                        <p:outputLabel value="#{myBundle.CreateDisponibilidadLabel_idBarco}" for="idBarco" />
+                        <p:selectOneMenu id="idBarco" value="#{disponibilidadController.selected.idBarco}" required="true" requiredMessage="#{myBundle.CreateDisponibilidadRequiredMessage_idBarco}" converter="barcoConverter">
+                            <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{barcoController.items}"
+                                           var="idBarcoItem"
+                                           itemValue="#{idBarcoItem}"
+                                           itemLabel="#{idBarcoItem.idBarco.toString()}"
+                                           />
+
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{disponibilidadController.saveNew}" value="#{myBundle.Save}" update="display,:DisponibilidadListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('DisponibilidadCreateDialog'));">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{myBundle.Cancel}" oncomplete="PF('DisponibilidadCreateDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

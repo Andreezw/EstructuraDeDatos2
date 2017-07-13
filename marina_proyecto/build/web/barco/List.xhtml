@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="BarcoListForm">
+
+        <p:panel header="#{myBundle.ListBarcoTitle}">
+            <p:contextMenu id="BarcoDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{myBundle.Create}" onclick="document.getElementById('BarcoListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{myBundle.View}" onclick="document.getElementById('BarcoListForm:viewButton').click();" icon="ui-icon-search"/>
+                <p:menuitem value="#{myBundle.Edit}" onclick="document.getElementById('BarcoListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{myBundle.Delete}" onclick="document.getElementById('BarcoListForm:deleteButton').click();" icon="ui-icon-trash"/>
+                <p:separator/>
+                <p:menuitem value="#{myBundle.BarcoMenuItem_corbetaCollection}" icon="ui-icon-search"  action="#{barcoController.navigateCorbetaCollection}" ajax="false"/>  
+                <p:menuitem value="#{myBundle.BarcoMenuItem_disponibilidadCollection}" icon="ui-icon-search"  action="#{barcoController.navigateDisponibilidadCollection}" disabled="#{empty barcoController.selected.disponibilidadCollection}" ajax="false"/>  
+                <p:menuitem value="#{myBundle.BarcoMenuItem_destructoresCollection}" icon="ui-icon-search"  action="#{barcoController.navigateDestructoresCollection}" disabled="#{empty barcoController.selected.destructoresCollection}" ajax="false"/>  
+                <p:menuitem value="#{myBundle.BarcoMenuItem_fragataCollection}" icon="ui-icon-search"  action="#{barcoController.navigateFragataCollection}" disabled="#{empty barcoController.selected.fragataCollection}" ajax="false"/>  
+                <p:menuitem value="#{myBundle.BarcoMenuItem_submarinosCollection}" icon="ui-icon-search"  action="#{barcoController.navigateSubmarinosCollection}" disabled="#{empty barcoController.selected.submarinosCollection}" ajax="false"/>  
+                <p:menuitem value="#{myBundle.BarcoMenuItem_rutasCollection}" icon="ui-icon-search"  action="#{barcoController.navigateRutasCollection}" disabled="#{empty barcoController.selected.rutasCollection}" ajax="false"/>  
+            </p:contextMenu>
+            <p:dataTable id="datalist"
+                         value="#{barcoController.items}"
+                         lazy="false"
+                         rowKey="#{item.idBarco}"
+                         var="item"
+                         paginator="true"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         selection="#{barcoController.selected}">
+                <!--
+                         To enable Lazy Loading, please copy/replace the following lines above,
+                         and be sure to replace the word HASH with the # symbol:
+                
+                         value="HASH{barcoController.lazyItems}"
+                         lazy="true"
+                         rowKey="HASH{item.idBarco}"  <<< Remove this line
+                -->
+
+
+                <p:ajax event="rowSelect"   update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:BarcoDataTableContextMenu"/>
+                <p:ajax event="rowUnselect" update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:BarcoDataTableContextMenu"/>
+                <p:ajax event="contextMenu" update="@form:createButton @form:viewButton @form:editButton @form:deleteButton"/>
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('BarcoListForm:viewButton').click();"/>
+
+                <p:column sortBy="#{item.idBarco}" filterBy="#{item.idBarco}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListBarcoTitle_idBarco}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.idBarco}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.nombre}" filterBy="#{item.nombre}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListBarcoTitle_nombre}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.nombre}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.tipo}" filterBy="#{item.tipo}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListBarcoTitle_tipo}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.tipo}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.anio}" filterBy="#{item.anio}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListBarcoTitle_anio}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.anio}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.desplazamiento}" filterBy="#{item.desplazamiento}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListBarcoTitle_desplazamiento}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.desplazamiento}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.alcance}" filterBy="#{item.alcance}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListBarcoTitle_alcance}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.alcance}"/>
+                </p:column>
+
+                <!--
+                                    <p:column sortBy="#{item.calibre}" filterBy="#{item.calibre}">
+                                        <f:facet name="header">
+                                            <h:outputText value="#{myBundle.ListBarcoTitle_calibre}"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.calibre}"/>
+                                    </p:column>
+                -->
+                <!--
+                                    <p:column sortBy="#{item.tareaMisil}" filterBy="#{item.tareaMisil}">
+                                        <f:facet name="header">
+                                            <h:outputText value="#{myBundle.ListBarcoTitle_tareaMisil}"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.tareaMisil}"/>
+                                    </p:column>
+                -->
+                <!--
+                                    <p:column sortBy="#{item.armamento}" filterBy="#{item.armamento}">
+                                        <f:facet name="header">
+                                            <h:outputText value="#{myBundle.ListBarcoTitle_armamento}"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.armamento}"/>
+                                    </p:column>
+                -->
+                <!--
+                                    <p:column sortBy="#{item.sensores}" filterBy="#{item.sensores}">
+                                        <f:facet name="header">
+                                            <h:outputText value="#{myBundle.ListBarcoTitle_sensores}"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.sensores}"/>
+                                    </p:column>
+                -->
+
+            </p:dataTable>
+
+            <p:commandButton id="createButton"                             icon="ui-icon-plus"   value="#{myBundle.Create}" actionListener="#{barcoController.prepareCreate}" update=":BarcoCreateForm" oncomplete="PF('BarcoCreateDialog').show()"/>
+            <p:commandButton id="viewButton"   style="visibility: hidden;" icon="ui-icon-search" value="#{myBundle.View}" update=":BarcoViewForm" oncomplete="PF('BarcoViewDialog').show()" disabled="#{empty barcoController.selected}"/>
+            <p:commandButton id="editButton"   style="visibility: hidden;" icon="ui-icon-pencil" value="#{myBundle.Edit}" update=":BarcoEditForm" oncomplete="PF('BarcoEditDialog').show()" disabled="#{empty barcoController.selected}"/>
+            <p:commandButton id="deleteButton" style="visibility: hidden;" icon="ui-icon-trash"  value="#{myBundle.Delete}" actionListener="#{barcoController.delete}" update=":growl,datalist" disabled="#{empty barcoController.selected}">
+                <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+
+        </p:panel>
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

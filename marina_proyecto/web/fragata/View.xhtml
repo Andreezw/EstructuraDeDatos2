@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="FragataViewDlg" widgetVar="FragataViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{myBundle.ViewFragataTitle}" closeOnEscape="true">
+
+            <h:form id="FragataViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{fragataController.selected != null}">
+
+                        <h:outputText value="#{myBundle.ViewFragataLabel_idFragata}"/>
+                        <h:outputText value="#{fragataController.selected.idFragata}" title="#{myBundle.ViewFragataTitle_idFragata}"/>
+
+                        <h:outputText value="#{myBundle.ViewFragataLabel_guerraElectronica}"/>
+                        <h:outputText value="#{fragataController.selected.guerraElectronica}" title="#{myBundle.ViewFragataTitle_guerraElectronica}"/>
+
+                        <h:outputText value="#{myBundle.ViewFragataLabel_idBarco}"/>
+                        <h:outputText value="#{fragataController.selected.idBarco.idBarco}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{myBundle.Close}" onclick="PF('FragataViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

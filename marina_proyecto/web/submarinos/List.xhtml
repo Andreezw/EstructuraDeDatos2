@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="SubmarinosListForm">
+
+        <p:panel header="#{myBundle.ListSubmarinosTitle}">
+            <p:contextMenu id="SubmarinosDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{myBundle.Create}" onclick="document.getElementById('SubmarinosListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{myBundle.View}" onclick="document.getElementById('SubmarinosListForm:viewButton').click();" icon="ui-icon-search"/>
+                <p:menuitem value="#{myBundle.Edit}" onclick="document.getElementById('SubmarinosListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{myBundle.Delete}" onclick="document.getElementById('SubmarinosListForm:deleteButton').click();" icon="ui-icon-trash"/>
+                <p:separator/>
+                <p:menuitem value="#{myBundle.SubmarinosMenuItem_idBarco}" icon="ui-icon-search"  actionListener="#{submarinosController.prepareIdBarco}" update=":BarcoViewForm" oncomplete="PF('BarcoViewDialog').show()" disabled="#{empty submarinosController.selected.idBarco}"/>  
+            </p:contextMenu>
+            <p:dataTable id="datalist"
+                         value="#{submarinosController.items}"
+                         lazy="false"
+                         rowKey="#{item.idSubmarinos}"
+                         var="item"
+                         paginator="true"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         selection="#{submarinosController.selected}">
+                <!--
+                         To enable Lazy Loading, please copy/replace the following lines above,
+                         and be sure to replace the word HASH with the # symbol:
+                
+                         value="HASH{submarinosController.lazyItems}"
+                         lazy="true"
+                         rowKey="HASH{item.idSubmarinos}"  <<< Remove this line
+                -->
+
+
+                <p:ajax event="rowSelect"   update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:SubmarinosDataTableContextMenu" listener="#{submarinosController.resetParents}"/>
+                <p:ajax event="rowUnselect" update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:SubmarinosDataTableContextMenu" listener="#{submarinosController.resetParents}"/>
+                <p:ajax event="contextMenu" update="@form:createButton @form:viewButton @form:editButton @form:deleteButton" listener="#{submarinosController.resetParents}"/>
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('SubmarinosListForm:viewButton').click();"/>
+
+                <p:column sortBy="#{item.idSubmarinos}" filterBy="#{item.idSubmarinos}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListSubmarinosTitle_idSubmarinos}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.idSubmarinos}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.propulsion}" filterBy="#{item.propulsion}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListSubmarinosTitle_propulsion}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.propulsion}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.inmersion}" filterBy="#{item.inmersion}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListSubmarinosTitle_inmersion}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.inmersion}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.idBarco.idBarco}" filterBy="#{item.idBarco.idBarco}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListSubmarinosTitle_idBarco}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.idBarco.idBarco}"/>
+                </p:column>
+
+
+            </p:dataTable>
+
+            <p:commandButton id="createButton"                             icon="ui-icon-plus"   value="#{myBundle.Create}" actionListener="#{submarinosController.prepareCreate}" update=":SubmarinosCreateForm" oncomplete="PF('SubmarinosCreateDialog').show()"/>
+            <p:commandButton id="viewButton"   style="visibility: hidden;" icon="ui-icon-search" value="#{myBundle.View}" update=":SubmarinosViewForm" oncomplete="PF('SubmarinosViewDialog').show()" disabled="#{empty submarinosController.selected}"/>
+            <p:commandButton id="editButton"   style="visibility: hidden;" icon="ui-icon-pencil" value="#{myBundle.Edit}" update=":SubmarinosEditForm" oncomplete="PF('SubmarinosEditDialog').show()" disabled="#{empty submarinosController.selected}"/>
+            <p:commandButton id="deleteButton" style="visibility: hidden;" icon="ui-icon-trash"  value="#{myBundle.Delete}" actionListener="#{submarinosController.delete}" update=":growl,datalist" disabled="#{empty submarinosController.selected}">
+                <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+
+        </p:panel>
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

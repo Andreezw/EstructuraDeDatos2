@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="FragataListForm">
+
+        <p:panel header="#{myBundle.ListFragataTitle}">
+            <p:contextMenu id="FragataDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{myBundle.Create}" onclick="document.getElementById('FragataListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{myBundle.View}" onclick="document.getElementById('FragataListForm:viewButton').click();" icon="ui-icon-search"/>
+                <p:menuitem value="#{myBundle.Edit}" onclick="document.getElementById('FragataListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{myBundle.Delete}" onclick="document.getElementById('FragataListForm:deleteButton').click();" icon="ui-icon-trash"/>
+                <p:separator/>
+                <p:menuitem value="#{myBundle.FragataMenuItem_idBarco}" icon="ui-icon-search"  actionListener="#{fragataController.prepareIdBarco}" update=":BarcoViewForm" oncomplete="PF('BarcoViewDialog').show()" disabled="#{empty fragataController.selected.idBarco}"/>  
+            </p:contextMenu>
+            <p:dataTable id="datalist"
+                         value="#{fragataController.items}"
+                         lazy="false"
+                         rowKey="#{item.idFragata}"
+                         var="item"
+                         paginator="true"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         selection="#{fragataController.selected}">
+                <!--
+                         To enable Lazy Loading, please copy/replace the following lines above,
+                         and be sure to replace the word HASH with the # symbol:
+                
+                         value="HASH{fragataController.lazyItems}"
+                         lazy="true"
+                         rowKey="HASH{item.idFragata}"  <<< Remove this line
+                -->
+
+
+                <p:ajax event="rowSelect"   update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:FragataDataTableContextMenu" listener="#{fragataController.resetParents}"/>
+                <p:ajax event="rowUnselect" update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:FragataDataTableContextMenu" listener="#{fragataController.resetParents}"/>
+                <p:ajax event="contextMenu" update="@form:createButton @form:viewButton @form:editButton @form:deleteButton" listener="#{fragataController.resetParents}"/>
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('FragataListForm:viewButton').click();"/>
+
+                <p:column sortBy="#{item.idFragata}" filterBy="#{item.idFragata}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListFragataTitle_idFragata}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.idFragata}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.guerraElectronica}" filterBy="#{item.guerraElectronica}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListFragataTitle_guerraElectronica}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.guerraElectronica}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.idBarco.idBarco}" filterBy="#{item.idBarco.idBarco}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListFragataTitle_idBarco}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.idBarco.idBarco}"/>
+                </p:column>
+
+
+            </p:dataTable>
+
+            <p:commandButton id="createButton"                             icon="ui-icon-plus"   value="#{myBundle.Create}" actionListener="#{fragataController.prepareCreate}" update=":FragataCreateForm" oncomplete="PF('FragataCreateDialog').show()"/>
+            <p:commandButton id="viewButton"   style="visibility: hidden;" icon="ui-icon-search" value="#{myBundle.View}" update=":FragataViewForm" oncomplete="PF('FragataViewDialog').show()" disabled="#{empty fragataController.selected}"/>
+            <p:commandButton id="editButton"   style="visibility: hidden;" icon="ui-icon-pencil" value="#{myBundle.Edit}" update=":FragataEditForm" oncomplete="PF('FragataEditDialog').show()" disabled="#{empty fragataController.selected}"/>
+            <p:commandButton id="deleteButton" style="visibility: hidden;" icon="ui-icon-trash"  value="#{myBundle.Delete}" actionListener="#{fragataController.delete}" update=":growl,datalist" disabled="#{empty fragataController.selected}">
+                <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+
+        </p:panel>
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

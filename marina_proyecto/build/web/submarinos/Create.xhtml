@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="SubmarinosCreateDlg" widgetVar="SubmarinosCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{myBundle.CreateSubmarinosTitle}" closeOnEscape="true">
+
+            <h:form id="SubmarinosCreateForm">
+
+                <h:panelGroup id="display" rendered="#{submarinosController.selected != null}">
+                    <p:panelGrid columns="2" columnClasses="column">
+
+                        <p:outputLabel value="#{myBundle.CreateSubmarinosLabel_propulsion}" for="propulsion" />
+                        <p:inputText id="propulsion" value="#{submarinosController.selected.propulsion}" title="#{myBundle.CreateSubmarinosTitle_propulsion}" required="true" requiredMessage="#{myBundle.CreateSubmarinosRequiredMessage_propulsion}" size="50" maxlength="50"/>
+
+                        <p:outputLabel value="#{myBundle.CreateSubmarinosLabel_inmersion}" for="inmersion" />
+                        <p:inputText id="inmersion" value="#{submarinosController.selected.inmersion}" title="#{myBundle.CreateSubmarinosTitle_inmersion}" required="true" requiredMessage="#{myBundle.CreateSubmarinosRequiredMessage_inmersion}" size="50" maxlength="50"/>
+
+                        <p:outputLabel value="#{myBundle.CreateSubmarinosLabel_idBarco}" for="idBarco" />
+                        <p:selectOneMenu id="idBarco" value="#{submarinosController.selected.idBarco}" required="true" requiredMessage="#{myBundle.CreateSubmarinosRequiredMessage_idBarco}" converter="barcoConverter">
+                            <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{barcoController.items}"
+                                           var="idBarcoItem"
+                                           itemValue="#{idBarcoItem}"
+                                           itemLabel="#{idBarcoItem.idBarco.toString()}"
+                                           />
+
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{submarinosController.saveNew}" value="#{myBundle.Save}" update="display,:SubmarinosListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('SubmarinosCreateDialog'));">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{myBundle.Cancel}" oncomplete="PF('SubmarinosCreateDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

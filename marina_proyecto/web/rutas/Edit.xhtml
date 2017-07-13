@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="RutasEditDlg" widgetVar="RutasEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{myBundle.EditRutasTitle}" closeOnEscape="true">
+
+            <h:form id="RutasEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{rutasController.selected != null}">
+
+
+                        <h:outputLabel value="#{myBundle.EditRutasLabel_idRutas}" for="idRutas" />
+                        <h:outputText id="idRutas" value="#{rutasController.selected.idRutas}" />
+
+                        <p:outputLabel value="#{myBundle.EditRutasLabel_diaSalida}" for="diaSalida" />
+                        <p:inputText id="diaSalida" value="#{rutasController.selected.diaSalida}" title="#{myBundle.EditRutasTitle_diaSalida}" size="255" maxlength="255"/>
+
+                        <p:outputLabel value="#{myBundle.EditRutasLabel_diaLlegada}" for="diaLlegada" />
+                        <p:inputText id="diaLlegada" value="#{rutasController.selected.diaLlegada}" title="#{myBundle.EditRutasTitle_diaLlegada}" size="255" maxlength="255"/>
+
+                        <p:outputLabel value="#{myBundle.EditRutasLabel_idBarco}" for="idBarco" />
+                        <p:selectOneMenu id="idBarco" value="#{rutasController.selected.idBarco}" required="true" requiredMessage="#{myBundle.EditRutasRequiredMessage_idBarco}" converter="barcoConverter">
+                            <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{barcoController.items}"
+                                           var="idBarcoItem"
+                                           itemValue="#{idBarcoItem}"
+                                           itemLabel="#{idBarcoItem.idBarco.toString()}"
+                                           />
+
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{rutasController.save}" value="#{myBundle.Save}" update="display,:RutasListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('RutasEditDialog'));">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{myBundle.Cancel}" oncomplete="PF('RutasEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>
